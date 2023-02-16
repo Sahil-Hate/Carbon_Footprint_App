@@ -14,6 +14,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
 import android.text.format.DateUtils;
 import android.util.ArrayMap;
@@ -21,8 +22,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -53,7 +58,33 @@ import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+public class MainActivity extends AppCompatActivity{
+    private static int SPLASH_SCREEN = 5000;
+    //Variables
+    Animation topAnim;
+    @Override
+    protected void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        setContentView(R.layout.activity_main);
 
+        //Animations
+        topAnim = AnimationUtils.loadAnimation(this, R.anim.top_animation);
+        //Set animation to elements
+        ImageView image;
+        image.setAnimation(topAnim);
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent intent = new Intent(MainActivity.this, loginInterface.class);
+                startActivity(intent);
+                finish();
+            }
+        }, SPLASH_SCREEN);
+
+    }
+}
 public class  MainActivity extends Activity implements AdapterView.OnItemSelectedListener {
     private static final String TAG = "UsageStatsActivity";
     private static final boolean localLOGV = false;
